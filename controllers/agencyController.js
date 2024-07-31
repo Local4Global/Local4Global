@@ -38,7 +38,7 @@ exports.registerAgency = async (req, res) => {
 
     jwt.sign(
       payload,
-      config.get('jwtSecret'),
+      config.get('jwtSecret'), // Asegúrate de que esta línea esté correctamente escrita y que la clave sea 'jwtSecret'
       { expiresIn: 360000 },
       (err, token) => {
         if (err) throw err;
@@ -80,7 +80,7 @@ exports.loginAgency = async (req, res) => {
 
     jwt.sign(
       payload,
-      config.get('jwtSecret'),
+      config.get('jwtSecret'), // Asegúrate de que esta línea esté correctamente escrita y que la clave sea 'jwtSecret'
       { expiresIn: 360000 },
       (err, token) => {
         if (err) throw err;
@@ -92,5 +92,3 @@ exports.loginAgency = async (req, res) => {
     res.status(500).send('Server error');
   }
 };
-
-
