@@ -29,6 +29,7 @@ app.use('/api/projects', require('./routes/projects'));
 app.use('/api/tasks', require('./routes/tasks'));
 app.use('/api/messages', require('./routes/messages'));
 app.use('/api/progress-reports', require('./routes/progressReports'));
+app.use('/api/auth', require('./routes/auth')); // Asegúrate de añadir esto
 
 const PORT = process.env.PORT || config.get('PORT');
 
