@@ -10,6 +10,7 @@
 const express = require('express');
 const router = express.Router();
 const projectController = require('../controllers/projectController');
+const auth = require('../middleware/auth'); // Asegúrate de requerir el middleware de autenticación
 
 /**
  * @swagger
@@ -56,7 +57,7 @@ const projectController = require('../controllers/projectController');
  */
 
 // Crear un nuevo proyecto
-router.post('/', projectController.createProject);
+router.post('/', auth, projectController.createProject);
 
 /**
  * @swagger
@@ -72,7 +73,7 @@ router.post('/', projectController.createProject);
  */
 
 // Obtener todos los proyectos
-router.get('/', projectController.getProjects);
+router.get('/', auth, projectController.getProjects);
 
 /**
  * @swagger
@@ -101,4 +102,3 @@ router.get('/', projectController.getProjects);
 router.get('/:id', projectController.getProjectById);
 
 module.exports = router;
-
