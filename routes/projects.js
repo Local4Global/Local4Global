@@ -12,8 +12,6 @@ const router = express.Router();
 const projectController = require('../controllers/projectController');
 const auth = require('../middleware/auth'); // Asegúrate de requerir el middleware de autenticación
 
-
-
 /**
  * @swagger
  * /projects:
@@ -101,6 +99,6 @@ router.get('/', auth, projectController.getProjects);
  */
 
 // Obtener un proyecto por ID
-router.get('/:id', projectController.getProjectById);
+router.get('/:id', auth, projectController.getProjectById);
 
 module.exports = router;
