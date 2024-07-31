@@ -1,11 +1,10 @@
-require('dotenv').config(); // Asegúrate de que esto está al principio del archivo
-
 const express = require('express');
 const connectDB = require('./config/db');
 const cors = require('cors');
 const setupSwagger = require('./config/swagger');
 const config = require('config');
 const killPort = require('kill-port');
+require('dotenv').config();
 
 const app = express();
 
@@ -30,6 +29,7 @@ app.use('/api/projects', require('./routes/projects'));
 app.use('/api/tasks', require('./routes/tasks'));
 app.use('/api/messages', require('./routes/messages'));
 app.use('/api/progress-reports', require('./routes/progressReports'));
+app.use('/api/auth', require('./routes/auth')); // Asegúrate de tener esta línea
 
 const PORT = process.env.PORT || config.get('PORT');
 
