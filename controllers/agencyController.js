@@ -1,7 +1,6 @@
 const Agency = require('../models/Agency');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const config = require('config');
 const { validationResult } = require('express-validator');
 
 exports.registerAgency = async (req, res) => {
@@ -36,17 +35,23 @@ exports.registerAgency = async (req, res) => {
       },
     };
 
+    console.log('Payload:', payload);
+    console.log('JWT Secret:', process.env.JWT_SECRET);
+
     jwt.sign(
       payload,
-      config.get('jwtSecret'), // Asegúrate de que esta línea esté correctamente escrita y que la clave sea 'jwtSecret'
+      process.env.JWT_SECRET,
       { expiresIn: 360000 },
       (err, token) => {
-        if (err) throw err;
+        if (err) {
+          console.error('JWT Sign Error:', err);
+          throw err;
+        }
         res.json({ token });
       }
     );
   } catch (err) {
-    console.error(err.message);
+    console.error('Server error:', err.message);
     res.status(500).send('Server error');
   }
 };
@@ -78,17 +83,23 @@ exports.loginAgency = async (req, res) => {
       },
     };
 
+    console.log('Payload:', payload);
+    console.log('JWT Secret:', process.env.JWT_SECRET);
+
     jwt.sign(
       payload,
-      config.get('jwtSecret'), // Asegúrate de que esta línea esté correctamente escrita y que la clave sea 'jwtSecret'
+      process.env.JWT_SECRET,
       { expiresIn: 360000 },
       (err, token) => {
-        if (err) throw err;
+        if (err) {
+          console.error('JWT Sign Error:', err);
+          throw err;
+        }
         res.json({ token });
       }
     );
   } catch (err) {
-    console.error(err.message);
+    console.error('Server error:', err.message);
     res.status(500).send('Server error');
   }
 };
