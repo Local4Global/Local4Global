@@ -17,6 +17,11 @@ app.use(express.json({ extended: false }));
 // Configurar Swagger
 setupSwagger(app);
 
+// Ruta base
+app.get('/', (req, res) => {
+  res.send('API is running');
+});
+
 // Definir rutas
 app.use('/api/agencies', require('./routes/agencies'));
 app.use('/api/donors', require('./routes/donors'));

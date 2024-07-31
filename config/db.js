@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const config = require('config');
-const db = process.env.NODE_ENV === 'Develop' ? config.get('MONGO_URI_PROD') : config.get('MONGO_URI_DEV');
+const db = process.env.NODE_ENV === 'Production' ? config.get('MONGO_URI_PROD') : config.get('MONGO_URI_DEV');
 
 const connectDB = async () => {
   try {
