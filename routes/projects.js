@@ -12,6 +12,8 @@ const router = express.Router();
 const projectController = require('../controllers/projectController');
 const auth = require('../middleware/auth'); // Asegúrate de requerir el middleware de autenticación
 
+
+
 /**
  * @swagger
  * /projects:
