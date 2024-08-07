@@ -1,0 +1,42 @@
+# Node modules
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Production build
+/build
+/dist
+
+# dotenv environment variables file
+.env
+.env.development
+.env.production
+
+# MacOS files
+.DS_Store
+
+# Windows files
+Thumbs.db
+
+# IDE specific files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Others
+coverage/
+*.local
+*.lock
+.pnp.*
+.pnp
+
