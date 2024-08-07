@@ -1,12 +1,3 @@
-// routes/messages.js
-
-/**
- * @swagger
- * tags:
- *   name: Messages
- *   description: API to manage messages.
- */
-
 const express = require('express');
 const router = express.Router();
 const messageController = require('../controllers/messageController');

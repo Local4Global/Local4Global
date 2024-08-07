@@ -1,12 +1,3 @@
-// routes/donors.js
-
-/**
- * @swagger
- * tags:
- *   name: Donors
- *   description: API to manage donors.
- */
-
 const express = require('express');
 const router = express.Router();
 const { check } = require('express-validator');
@@ -91,4 +82,3 @@ router.post(
 );
 
 module.exports = router;
-

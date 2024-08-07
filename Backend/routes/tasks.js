@@ -1,12 +1,3 @@
-// routes/tasks.js
-
-/**
- * @swagger
- * tags:
- *   name: Tasks
- *   description: API to manage tasks.
- */
-
 const express = require('express');
 const router = express.Router();
 const taskController = require('../controllers/taskController');
