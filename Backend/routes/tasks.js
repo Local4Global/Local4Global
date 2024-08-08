@@ -1,4 +1,6 @@
-// routes/tasks.js
+const express = require('express');
+const router = express.Router();
+const taskController = require('../controllers/taskController');
 
 /**
  * @swagger
@@ -6,10 +8,6 @@
  *   name: Tasks
  *   description: API to manage tasks.
  */
-
-const express = require('express');
-const router = express.Router();
-const taskController = require('../controllers/taskController');
 
 /**
  * @swagger
@@ -48,8 +46,6 @@ const taskController = require('../controllers/taskController');
  *       500:
  *         description: Some server error
  */
-
-// Crear una nueva tarea
 router.post('/', taskController.createTask);
 
 /**
@@ -64,8 +60,6 @@ router.post('/', taskController.createTask);
  *       500:
  *         description: Some server error
  */
-
-// Obtener todas las tareas
 router.get('/', taskController.getTasks);
 
 /**
@@ -90,8 +84,6 @@ router.get('/', taskController.getTasks);
  *       500:
  *         description: Some server error
  */
-
-// Obtener una tarea por ID
 router.get('/:id', taskController.getTaskById);
 
 /**
@@ -133,8 +125,6 @@ router.get('/:id', taskController.getTaskById);
  *       500:
  *         description: Some server error
  */
-
-// Actualizar una tarea
 router.put('/:id', taskController.updateTask);
 
 /**
@@ -159,8 +149,7 @@ router.put('/:id', taskController.updateTask);
  *       500:
  *         description: Some server error
  */
-
-// Eliminar una tarea
 router.delete('/:id', taskController.deleteTask);
 
 module.exports = router;
+

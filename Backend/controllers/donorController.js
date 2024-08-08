@@ -38,7 +38,7 @@ exports.registerDonor = async (req, res) => {
 
     jwt.sign(
       payload,
-      config.get('jwtSecret'),
+      config.get('JWT_SECRET'),
       { expiresIn: 360000 },
       (err, token) => {
         if (err) throw err;
@@ -80,7 +80,7 @@ exports.loginDonor = async (req, res) => {
 
     jwt.sign(
       payload,
-      config.get('jwtSecret'),
+      config.get('JWT_SECRET'),
       { expiresIn: 360000 },
       (err, token) => {
         if (err) throw err;

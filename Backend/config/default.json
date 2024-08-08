@@ -1,7 +1,7 @@
 {
-  "MONGO_URI_DEV": "mongodb+srv://local4globalspain:1010Asasas@local4global.7jbo7ns.mongodb.net/DevelopDB?retryWrites=true&w=majority",
-  "MONGO_URI_PROD": "mongodb+srv://local4globalspain:1010Asasas@local4global.7jbo7ns.mongodb.net/ProductionDB?retryWrites=true&w=majority",
-  "JWT_SECRET": "your_jwt_secret",
+  "MONGO_URI_DEV": "mongodb+srv://local4globalspain:1010Asasas@local4global.7jbo7ns.mongodb.net/developmentDB?retryWrites=true&w=majority",
+  "MONGO_URI_PROD": "mongodb+srv://local4globalspain:1010Asasas@local4global.7jbo7ns.mongodb.net/productionDB?retryWrites=true&w=majority",
+  "JWT_SECRET": "mySuperSecretKey12345!",
   "PORT": 5001
 }
 
