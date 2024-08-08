@@ -1,7 +1,10 @@
 const mongoose = require('mongoose');
 const config = require('config');
 
-const db = process.env.NODE_ENV === 'Production' ? config.get('MONGO_URI_PROD') : config.get('MONGO_URI_DEV');
+const env = process.env.NODE_ENV;
+console.log(`Current environment: ${env}`);
+const db = env === 'production' ? config.get('MONGO_URI_PROD') : config.get('MONGO_URI_DEV');
+console.log(`Database URI: ${db}`);
 
 // Configurar la advertencia de Mongoose sobre strictQuery
 mongoose.set('strictQuery', true);
@@ -13,7 +16,7 @@ const connectDB = async () => {
         useNewUrlParser: true,
         useUnifiedTopology: true,
       });
-      console.log(`MongoDB connected to ${process.env.NODE_ENV === 'Production' ? 'production' : 'development'} database`);
+      console.log(`MongoDB connected to ${env === 'production' ? 'production' : 'development'} database`);
     }
   } catch (err) {
     console.error('Error connecting to MongoDB:', err.message);
@@ -22,6 +25,7 @@ const connectDB = async () => {
 };
 
 module.exports = connectDB;
+
 
 
 

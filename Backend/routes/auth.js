@@ -1,13 +1,40 @@
 const express = require('express');
 const router = express.Router();
 const { check, validationResult } = require('express-validator');
-const { registerAgency, loginAgency, authenticateUser } = require('../controllers/agencyController');
+const { registerAgency, authenticateUser } = require('../controllers/agencyController');
 
-// @route   POST api/auth
-// @desc    Authenticate user and get token
-// @access  Public
+/**
+ * @swagger
+ * /api/auth:
+ *   post:
+ *     summary: Authenticate user and get token
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               password:
+ *                 type: string
+ *                 format: password
+ *     responses:
+ *       200:
+ *         description: User authenticated successfully
+ *       400:
+ *         description: Invalid credentials
+ *       500:
+ *         description: Internal server error
+ */
 router.post(
-  '/',
+  '/login',
   [
     check('email', 'Please include a valid email').isEmail(),
     check('password', 'Password is required').exists()
@@ -15,9 +42,39 @@ router.post(
   authenticateUser
 );
 
-// @route   POST api/auth/register
-// @desc    Register a new agency
-// @access  Public
+/**
+ * @swagger
+ * /api/auth/register:
+ *   post:
+ *     summary: Register a new agency
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - email
+ *               - password
+ *             properties:
+ *               name:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               password:
+ *                 type: string
+ *                 format: password
+ *     responses:
+ *       200:
+ *         description: Agency registered successfully
+ *       400:
+ *         description: Bad request
+ *       500:
+ *         description: Internal server error
+ */
 router.post(
   '/register',
   [
@@ -28,16 +85,43 @@ router.post(
   registerAgency
 );
 
-// @route   POST api/auth/login
-// @desc    Login an agency
-// @access  Public
+/**
+ * @swagger
+ * /api/auth/login:
+ *   post:
+ *     summary: Login an agency
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               password:
+ *                 type: string
+ *                 format: password
+ *     responses:
+ *       200:
+ *         description: Agency logged in successfully
+ *       400:
+ *         description: Invalid credentials
+ *       500:
+ *         description: Internal server error
+ */
 router.post(
   '/login',
   [
     check('email', 'Please include a valid email').isEmail(),
     check('password', 'Password is required').exists()
   ],
-  loginAgency
+  authenticateUser
 );
 
 module.exports = router;

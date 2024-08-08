@@ -1,13 +1,13 @@
+const path = require('path');
 const swaggerJsDoc = require('swagger-jsdoc');
-const swaggerUi = require('swagger-ui-express');
 
 const swaggerOptions = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'Local4Global API',
+      title: 'Minimal API',
       version: '1.0.0',
-      description: 'API documentation for Local4Global'
+      description: 'A minimal API documentation example'
     },
     servers: [
       {
@@ -16,17 +16,12 @@ const swaggerOptions = {
       }
     ]
   },
-  apis: ['./routes/*.js']
+  apis: [path.join(__dirname, 'routes', '*.js')]
 };
 
 console.log('Swagger Options:', JSON.stringify(swaggerOptions, null, 2));
 
 const swaggerSpecs = swaggerJsDoc(swaggerOptions);
 
-module.exports = function (app) {
-  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
-};
-
-module.exports.swaggerSpecs = swaggerSpecs;
-
+module.exports = swaggerSpecs;
 

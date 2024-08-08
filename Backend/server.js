@@ -9,11 +9,7 @@ const dotenv = require('dotenv');
 const app = express();
 
 // Cargar las variables de entorno según el entorno
-if (process.env.NODE_ENV === 'production') {
-  dotenv.config({ path: '.env.production' });
-} else {
-  dotenv.config({ path: '.env.development' });
-}
+dotenv.config({ path: process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development' });
 
 const PORT = process.env.PORT || config.get('PORT') || 5001;
 
@@ -37,43 +33,36 @@ app.use('/api/projects', require('./routes/projects'));
 app.use('/api/tasks', require('./routes/tasks'));
 app.use('/api/messages', require('./routes/messages'));
 app.use('/api/progress-reports', require('./routes/progressReports'));
-app.use('/api/auth', require('./routes/auth')); // Asegúrate de tener esta línea
+app.use('/api/auth', require('./routes/auth'));
 
 let server;
 
 const startServer = async () => {
-  if (server) {
-    console.log('Server is already running. Skipping restart.');
-    return;
-  }
-
   try {
-    server = app.listen(PORT, () => {
-      console.log(`Server started on port ${PORT}`);
-    });
+    if (server) {
+      server.close(async () => {
+        await killPort(PORT);
+        console.log(`Puerto ${PORT} liberado`);
+        server = app.listen(PORT, () => {
+          console.log(`Server restarted on port ${PORT}`);
+        });
+      });
+    } else {
+      server = app.listen(PORT, () => {
+        console.log(`Server started on port ${PORT}`);
+      });
+    }
 
     server.on('error', async (err) => {
-      console.error('Server encountered an error:', err);
       if (err.code === 'EADDRINUSE') {
         console.log(`Port ${PORT} is already in use. Killing the process and restarting...`);
-        try {
-          await killPort(PORT);
-          console.log(`Port ${PORT} has been freed.`);
-          server = null; // Ensure server instance is reset
-          setTimeout(startServer, 1000); // Retraso de 1 segundo antes de intentar reiniciar el servidor
-        } catch (killErr) {
-          console.error(`Error killing the port ${PORT}:`, killErr);
-          process.exit(1); // Exit the process with failure
-        }
+        await killPort(PORT);
+        console.log(`Port ${PORT} has been freed.`);
+        setTimeout(startServer, 1000); // Retraso de 1 segundo antes de intentar reiniciar el servidor
       } else {
         console.error('Server error:', err);
         process.exit(1); // Exit the process with failure
       }
-    });
-
-    server.on('close', () => {
-      console.log('Server closed unexpectedly.');
-      server = null; // Reset server instance
     });
 
   } catch (err) {
@@ -84,8 +73,6 @@ const startServer = async () => {
 
 const runApp = async () => {
   try {
-    await killPort(PORT); // Asegurarse de que el puerto esté libre antes de iniciar
-    console.log(`Puerto ${PORT} liberado`);
     await connectDB();
     startServer();
   } catch (err) {
@@ -95,6 +82,9 @@ const runApp = async () => {
 };
 
 runApp();
+
+
+
 
 
 

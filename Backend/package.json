@@ -7,7 +7,13 @@
     "start": "node server.js",
     "dev": "cross-env NODE_ENV=development nodemon server.js",
     "prod": "cross-env NODE_ENV=production node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "clean": "rm -rf node_modules && npm install",
+    "build-docs": "swagger-jsdoc -d swagger.js -o ./swagger-output.json",
+    "lint": "eslint . --ext .js,.jsx",
+    "prettify": "prettier --write .",
+    "clear-cache": "npm cache clean --force",
+    "update-deps": "npm update"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -24,7 +30,8 @@
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
-    "nodemon": "^3.1.4"
+    "nodemon": "^3.1.4",
+    "eslint": "^7.32.0",
+    "prettier": "^2.3.2"
   }
 }
-

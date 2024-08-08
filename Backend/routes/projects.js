@@ -6,6 +6,13 @@ const auth = require('../middleware/auth'); // Middleware de autenticación
 
 /**
  * @swagger
+ * tags:
+ *   name: Projects
+ *   description: API to manage projects.
+ */
+
+/**
+ * @swagger
  * /projects:
  *   post:
  *     summary: Create a new project
@@ -22,6 +29,9 @@ const auth = require('../middleware/auth'); // Middleware de autenticación
  *               - startDate
  *               - endDate
  *               - location
+ *               - status
+ *               - progress
+ *               - funds
  *               - agency
  *             properties:
  *               name:
@@ -30,31 +40,30 @@ const auth = require('../middleware/auth'); // Middleware de autenticación
  *                 type: string
  *               startDate:
  *                 type: string
+ *                 format: date
  *               endDate:
  *                 type: string
+ *                 format: date
  *               location:
  *                 type: string
  *               status:
  *                 type: string
- *                 enum: [active, completed, pending]
- *                 default: pending
+ *                 enum: [Not Started, In Progress, Completed]
  *               progress:
  *                 type: number
- *                 default: 0
  *               funds:
  *                 type: number
- *                 default: 0
  *               agency:
  *                 type: string
  *                 format: ObjectId
  *     responses:
  *       200:
  *         description: The project was successfully created
+ *       400:
+ *         description: Bad request
  *       500:
  *         description: Some server error
  */
-
-// Crear un nuevo proyecto
 router.post(
   '/',
   [
@@ -81,8 +90,6 @@ router.post(
  *       500:
  *         description: Some server error
  */
-
-// Obtener todos los proyectos
 router.get('/', auth, projectController.getProjects);
 
 /**
@@ -107,8 +114,6 @@ router.get('/', auth, projectController.getProjects);
  *       500:
  *         description: Some server error
  */
-
-// Obtener un proyecto por ID
 router.get('/:id', auth, projectController.getProjectById);
 
 /**
@@ -138,8 +143,10 @@ router.get('/:id', auth, projectController.getProjectById);
  *                 type: string
  *               startDate:
  *                 type: string
+ *                 format: date
  *               endDate:
  *                 type: string
+ *                 format: date
  *               location:
  *                 type: string
  *               status:
@@ -157,8 +164,6 @@ router.get('/:id', auth, projectController.getProjectById);
  *       500:
  *         description: Some server error
  */
-
-// Actualizar un proyecto por ID
 router.put(
   '/:id',
   [
@@ -196,8 +201,6 @@ router.put(
  *       500:
  *         description: Some server error
  */
-
-// Eliminar un proyecto por ID
 router.delete('/:id', auth, projectController.deleteProject);
 
 module.exports = router;

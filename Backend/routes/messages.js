@@ -33,8 +33,6 @@ const messageController = require('../controllers/messageController');
  *       500:
  *         description: Some server error
  */
-
-// Enviar un nuevo mensaje
 router.post('/', messageController.createMessage);
 
 /**
@@ -49,8 +47,7 @@ router.post('/', messageController.createMessage);
  *       500:
  *         description: Some server error
  */
-
-// Obtener todos los mensajes
 router.get('/', messageController.getMessages);
 
 module.exports = router;
+

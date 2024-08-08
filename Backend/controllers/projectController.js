@@ -1,6 +1,7 @@
 const Project = require('../models/Project');
 const { validationResult } = require('express-validator');
 
+// Crear un nuevo proyecto
 exports.createProject = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -30,6 +31,7 @@ exports.createProject = async (req, res) => {
   }
 };
 
+// Obtener todos los proyectos de una agencia específica
 exports.getProjects = async (req, res) => {
   try {
     const projects = await Project.find({ agency: req.agencyId }); // Filtrar por agencia
@@ -40,6 +42,7 @@ exports.getProjects = async (req, res) => {
   }
 };
 
+// Obtener un proyecto por ID
 exports.getProjectById = async (req, res) => {
   try {
     const project = await Project.findById(req.params.id);
@@ -65,6 +68,7 @@ exports.getProjectById = async (req, res) => {
   }
 };
 
+// Actualizar un proyecto por ID
 exports.updateProject = async (req, res) => {
   const { name, description, startDate, endDate, location, status, progress, funds } = req.body;
 
@@ -103,6 +107,7 @@ exports.updateProject = async (req, res) => {
   }
 };
 
+// Eliminar un proyecto por ID
 exports.deleteProject = async (req, res) => {
   try {
     let project = await Project.findById(req.params.id);
@@ -124,4 +129,3 @@ exports.deleteProject = async (req, res) => {
     res.status(500).send('Server error');
   }
 };
-

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { loginAgency } from '../../services/auth';
+import { authenticateUser } from '../../services/auth';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -13,18 +13,25 @@ const Login = () => {
     setErrorMessage(''); // Reset error message
 
     try {
-      console.log('Sending credentials:', { email, password }); // Agrega este log
-      const response = await loginAgency({ email, password });
-      console.log('Response:', response);
-      localStorage.setItem('token', response.token); // Guarda el token en localStorage
-      if (response.agencyId) {
-        localStorage.setItem('agencyId', response.agencyId); // Guarda el agencyId en localStorage si está presente
-        console.log('Stored agencyId:', response.agencyId);
+      console.log('Sending credentials:', { email, password }); // Log para verificar los datos enviados
+      const response = await authenticateUser({ email, password });
+      console.log('Response:', response); // Log para verificar la respuesta
+      const { token, agencyId, donorId } = response;
+
+      localStorage.setItem('token', token); // Guarda el token en localStorage
+      if (agencyId) {
+        localStorage.setItem('agencyId', agencyId); // Guarda el agencyId en localStorage si está presente
+        console.log('Stored agencyId:', agencyId);
+        navigate('/agency-dashboard'); // Redirige al dashboard de agencia
+      } else if (donorId) {
+        localStorage.setItem('donorId', donorId); // Guarda el donorId en localStorage si está presente
+        console.log('Stored donorId:', donorId);
+        navigate('/donor-dashboard'); // Redirige al dashboard de donante
       } else {
-        console.error('agencyId not found in response:', response);
+        console.error('Neither agencyId nor donorId found in response:', response);
       }
-      navigate('/dashboard'); // Redirige al usuario a la página de dashboard después del registro exitoso
     } catch (error) {
+      console.error('Error during login:', error);
       if (error.response) {
         const errorMsg = error.response.data.msg || 'Invalid credentials';
         setErrorMessage(errorMsg);
@@ -37,7 +44,7 @@ const Login = () => {
 
   return (
     <div>
-      <h1>Agency Login</h1>
+      <h1>Login</h1>
       <form onSubmit={handleSubmit}>
         <div>
           <label>Email:</label>
@@ -69,6 +76,7 @@ const Login = () => {
 };
 
 export default Login;
+
 
 
 

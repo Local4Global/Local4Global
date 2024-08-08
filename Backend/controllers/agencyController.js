@@ -50,87 +50,50 @@ exports.registerAgency = async (req, res) => {
   }
 };
 
-exports.loginAgency = async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-
-  const { email, password } = req.body;
-  console.log('Received Email:', email);
-  console.log('Received Password:', password); // No se recomienda en producción
-
-  try {
-    let agency = await Agency.findOne({ email });
-
-    if (!agency) {
-      console.log('Agency not found');
-      return res.status(400).json({ msg: 'Invalid credentials' });
-    }
-
-    const isMatch = await bcrypt.compare(password, agency.password);
-    console.log('Password Match:', isMatch);
-
-    if (!isMatch) {
-      return res.status(400).json({ msg: 'Invalid credentials' });
-    }
-
-    const payload = {
-      agencyId: agency._id.toString(),
-    };
-
-    jwt.sign(
-      payload,
-      config.get('JWT_SECRET'),
-      { expiresIn: '1h' },
-      (err, token) => {
-        if (err) throw err;
-        res.json({ token, agencyId: payload.agencyId });
-      }
-    );
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
-  }
-};
-
 exports.authenticateUser = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
+    console.log('Validation errors:', errors.array());
     return res.status(400).json({ errors: errors.array() });
   }
 
   const { email, password } = req.body;
-  console.log('Email:', email);
-  console.log('Password:', password);
+  console.log('Email received:', email);
+  console.log('Password received:', password); // No se recomienda en producción
 
   try {
-    let donor = await Donor.findOne({ email });
-    let agency = null;
+    let user = await Donor.findOne({ email });
+    console.log('Donor found:', user);
+    if (!user) {
+      user = await Agency.findOne({ email });
+      console.log('Agency found:', user);
+    }
+
     let agencyId = null;
     let donorId = null;
 
-    if (!donor) {
-      agency = await Agency.findOne({ email });
-      if (agency) {
-        agencyId = agency._id.toString();
-      }
+    if (!user) {
+      console.log('Usuario no encontrado');
+      return res.status(400).json({ msg: 'Usuario no encontrado' });
+    }
+
+    if (user instanceof Donor) {
+      donorId = user._id.toString();
     } else {
-      donorId = donor._id.toString();
+      agencyId = user._id.toString();
     }
 
-    if (!donor && !agency) {
-      return res.status(400).json({ msg: 'Invalid credentials' });
-    }
-
-    const user = donor || agency;
     const isMatch = await bcrypt.compare(password, user.password);
-
+    console.log('Password match:', isMatch);
     if (!isMatch) {
-      return res.status(400).json({ msg: 'Invalid credentials' });
+      console.log('Credenciales inválidas');
+      return res.status(400).json({ msg: 'Credenciales inválidas' });
     }
 
-    const payload = agencyId ? { agencyId } : { donorId };
+    const payload = {
+      agencyId,
+      donorId
+    };
 
     jwt.sign(
       payload,
@@ -142,10 +105,7 @@ exports.authenticateUser = async (req, res) => {
       }
     );
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
+    console.error('Error del servidor:', err.message);
+    res.status(500).send('Error del servidor');
   }
 };
-
-
-
